@@ -200,7 +200,7 @@ Both terminals read and write the same `.gsd/` files on disk. Your decisions in 
 
 ### First launch
 
-On first run, GSD prompts for optional API keys (Brave Search, Google Gemini, Context7, Jina) for web research and documentation tools. All optional — press Enter to skip any.
+On first run, GSD prompts for optional API keys (Brave Search, Google Gemini, Context7, Jina, Tavily) for web research and documentation tools. All optional — press Enter to skip any.
 
 ### Commands
 
@@ -328,7 +328,7 @@ GSD ships with 13 extensions, all loaded automatically:
 |-----------|-----------------|
 | **GSD** | Core workflow engine, auto mode, commands, dashboard |
 | **Browser Tools** | Playwright-based browser for UI verification |
-| **Search the Web** | Brave Search + Jina page extraction |
+| **Search the Web** | Brave Search, Tavily, or Jina page extraction |
 | **Google Search** | Gemini-powered web search with AI-synthesized answers |
 | **Context7** | Up-to-date library/framework documentation |
 | **Background Shell** | Long-running process management with readiness detection |
@@ -388,6 +388,7 @@ gsd (CLI binary)
 
 Optional:
 - Brave Search API key (web research)
+- Tavily API key (web research — alternative to Brave)
 - Google Gemini API key (web research via Gemini Search grounding)
 - Context7 API key (library docs)
 - Jina API key (page extraction)
