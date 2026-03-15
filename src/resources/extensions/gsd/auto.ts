@@ -86,6 +86,7 @@ import {
 import { GitServiceImpl, runGit } from "./git-service.js";
 import { nativeCommitCountBetween } from "./native-git-bridge.js";
 import { getPriorSliceCompletionBlocker } from "./dispatch-guard.js";
+import { formatGitError } from "./git-self-heal.js";
 import {
   createAutoWorktree,
   enterAutoWorktree,
@@ -1703,7 +1704,7 @@ async function dispatchNextUnit(
             }
 
             // Non-conflict errors: reset and stop
-            const message = error instanceof Error ? error.message : String(error);
+            const message = formatGitError(error instanceof Error ? error : String(error));
             try {
               const status = runGit(basePath, ["status", "--porcelain"], { allowFailure: true });
               if (status && (status.includes("UU ") || status.includes("AA ") || status.includes("UD "))) {

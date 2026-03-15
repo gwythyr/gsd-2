@@ -23,6 +23,7 @@ import {
   inferCommitType,
 } from "./git-service.js";
 import type { MergeSliceResult } from "./git-service.js";
+import { recoverCheckout, withMergeHeal } from "./git-self-heal.js";
 import {
   nativeBranchExists,
   nativeCommitCountBetween,
@@ -275,12 +276,8 @@ export function mergeSliceToMilestone(
     );
   }
 
-  // Checkout milestone branch
-  execSync(`git checkout ${milestoneBranch}`, {
-    cwd,
-    stdio: ["ignore", "pipe", "pipe"],
-    encoding: "utf-8",
-  });
+  // Checkout milestone branch (with self-healing reset)
+  recoverCheckout(cwd, milestoneBranch);
 
   // Build rich commit message (replicates GitServiceImpl.buildRichCommitMessage format)
   const commitType = inferCommitType(sliceTitle);
@@ -308,36 +305,26 @@ export function mergeSliceToMilestone(
     // Fall back to subject-only message
   }
 
-  // Merge --no-ff
+  // Merge --no-ff (with self-healing retry for transient failures)
   try {
-    execSync(`git merge --no-ff -m "${message.replace(/"/g, '\\"')}" ${sliceBranch}`, {
-      cwd,
-      stdio: ["ignore", "pipe", "pipe"],
-      encoding: "utf-8",
-    });
-  } catch {
-    // Check if this is a merge conflict
-    try {
-      const conflictOutput = execSync("git diff --name-only --diff-filter=U", {
+    withMergeHeal(cwd, () => {
+      execSync(`git merge --no-ff -m "${message.replace(/"/g, '\\"')}" ${sliceBranch}`, {
         cwd,
         stdio: ["ignore", "pipe", "pipe"],
         encoding: "utf-8",
-      }).trim();
-
-      if (conflictOutput) {
-        const conflictedFiles = conflictOutput.split("\n").filter(Boolean);
-        throw new MergeConflictError(
-          conflictedFiles,
-          "merge",
-          sliceBranch,
-          milestoneBranch,
-        );
-      }
-    } catch (innerErr) {
-      if (innerErr instanceof MergeConflictError) throw innerErr;
+      });
+    });
+  } catch (err) {
+    if (err instanceof MergeConflictError) {
+      // Re-throw with correct branch context
+      throw new MergeConflictError(
+        err.conflictedFiles,
+        err.strategy,
+        sliceBranch,
+        milestoneBranch,
+      );
     }
-    // Non-conflict git error
-    throw new Error(`git merge --no-ff failed for ${sliceBranch} into ${milestoneBranch}`);
+    throw err;
   }
 
   // Delete slice branch
@@ -426,12 +413,8 @@ export function mergeMilestoneToMain(
   const prefs = loadEffectiveGSDPreferences()?.preferences?.git ?? {};
   const mainBranch = prefs.main_branch || "main";
 
-  // 5. Checkout main
-  execSync(`git checkout ${mainBranch}`, {
-    cwd: originalBasePath_,
-    stdio: ["ignore", "pipe", "pipe"],
-    encoding: "utf-8",
-  });
+  // 5. Checkout main (with self-healing reset)
+  recoverCheckout(originalBasePath_, mainBranch);
 
   // 6. Build rich commit message
   const milestoneTitle = roadmap.title.replace(/^M\d+:\s*/, "").trim() || milestoneId;
@@ -443,32 +426,24 @@ export function mergeMilestoneToMain(
   }
   const commitMessage = subject + body;
 
-  // 7. Squash merge
+  // 7. Squash merge (with self-healing retry for transient failures)
   try {
-    execSync(`git merge --squash ${milestoneBranch}`, {
-      cwd: originalBasePath_,
-      stdio: ["ignore", "pipe", "pipe"],
-      encoding: "utf-8",
-    });
-  } catch {
-    // Check for merge conflicts
-    try {
-      const conflictOutput = execSync("git diff --name-only --diff-filter=U", {
+    withMergeHeal(originalBasePath_, () => {
+      execSync(`git merge --squash ${milestoneBranch}`, {
         cwd: originalBasePath_,
         stdio: ["ignore", "pipe", "pipe"],
         encoding: "utf-8",
-      }).trim();
-      if (conflictOutput) {
-        const conflictedFiles = conflictOutput.split("\n").filter(Boolean);
-        throw new MergeConflictError(
-          conflictedFiles,
-          "merge",
-          milestoneBranch,
-          mainBranch,
-        );
-      }
-    } catch (innerErr) {
-      if (innerErr instanceof MergeConflictError) throw innerErr;
+      });
+    });
+  } catch (err) {
+    if (err instanceof MergeConflictError) {
+      // Re-throw with correct branch context
+      throw new MergeConflictError(
+        err.conflictedFiles,
+        err.strategy,
+        milestoneBranch,
+        mainBranch,
+      );
     }
     // Possibly "already up to date" -- fall through to commit which will handle nothing-to-commit
   }

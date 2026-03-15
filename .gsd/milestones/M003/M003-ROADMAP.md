@@ -65,7 +65,7 @@ This milestone is complete only when all are true:
 - [x] **S04: Preferences + backwards compatibility** `risk:medium` `depends:[S01]`
   > After this: `git.isolation: "worktree"` (default for new projects) / `"branch"` (existing projects) and `git.merge_to_main: "milestone"` / `"slice"` preferences are validated and respected. An existing project with `gsd/*` branches defaults to branch mode and works identically to today. Verified by running tests in both modes.
 
-- [ ] **S05: Self-healing git repair** `risk:medium` `depends:[S01,S02,S03]`
+- [x] **S05: Self-healing git repair** `risk:medium` `depends:[S01,S02,S03]`
   > After this: when a merge fails or checkout breaks during auto-mode, the system aborts the failed operation, resets working tree state, and retries. Only truly unresolvable conflicts (real code conflicts between human-edited files) pause auto-mode. Users see non-technical messages, not raw git errors. Verified by deliberately introducing failures and confirming auto-recovery.
 
 - [ ] **S06: Doctor + cleanup + code simplification** `risk:low` `depends:[S01,S02,S03,S05]`
