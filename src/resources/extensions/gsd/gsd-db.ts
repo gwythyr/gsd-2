@@ -790,6 +790,21 @@ export function upsertRequirement(r: Requirement): void {
 /**
  * Insert or replace an artifact. Uses the `path` PK for idempotency.
  */
+/**
+ * Delete all rows from the artifacts table.
+ * The artifacts table is a read cache — clearing it forces the next
+ * deriveState() to fall through to disk reads (native Rust batch parse).
+ * Safe to call when no database is open (no-op).
+ */
+export function clearArtifacts(): void {
+  if (!currentDb) return;
+  try {
+    currentDb.exec('DELETE FROM artifacts');
+  } catch {
+    // Clearing a cache should never be fatal
+  }
+}
+
 export function insertArtifact(a: {
   path: string;
   artifact_type: string;
