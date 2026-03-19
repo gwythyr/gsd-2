@@ -13,7 +13,7 @@
  * All removed sections are marked with REMOVED comments below.
  */
 
-import type { AuthStorage } from '@gsd/pi-coding-agent'
+import type { AuthStorage } from '@gsd/claude-code-adapter'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

@@ -6,7 +6,7 @@
  * and print modes, and loads extensions via the resource loader.
  */
 
-import type { LoadExtensionsResult, Model } from "../types/extension-api.js";
+import type { LoadExtensionsResult, ExtensionRuntime, Model } from "../types/extension-api.js";
 
 // ============================================================================
 // Types
@@ -165,9 +165,31 @@ export async function createAgentSession(
 
 	// Load extensions via resourceLoader
 	// TODO: Wire up actual extension loading from resourceLoader paths
+	const stubRuntime = {
+		flagValues: new Map(),
+		pendingProviderRegistrations: [],
+		registerProvider: () => {},
+		unregisterProvider: () => {},
+		sendMessage: () => {},
+		sendUserMessage: () => {},
+		retryLastTurn: () => {},
+		appendEntry: () => {},
+		setSessionName: () => {},
+		getSessionName: () => undefined,
+		setLabel: () => {},
+		getActiveTools: () => [] as string[],
+		getAllTools: () => [] as any[],
+		setActiveTools: () => {},
+		refreshTools: () => {},
+		getCommands: () => [] as any[],
+		setModel: async () => true,
+		getThinkingLevel: () => "off" as const,
+		setThinkingLevel: () => {},
+	} satisfies ExtensionRuntime;
 	const extensionsResult: LoadExtensionsResult = {
 		extensions: [],
 		errors: [],
+		runtime: stubRuntime,
 	};
 
 	if (resourceLoader) {

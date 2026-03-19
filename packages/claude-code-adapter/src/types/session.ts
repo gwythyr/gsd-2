@@ -198,18 +198,19 @@ export class SessionManager {
 	 */
 	static continueRecent(cwd: string, dir?: string): SessionManager {
 		if (dir && existsSync(dir)) {
+			const sessionDir = dir;
 			try {
-				const files = readdirSync(dir)
-					.filter((f) => f.endsWith(".jsonl"))
-					.map((f) => ({
+				const files = readdirSync(sessionDir)
+					.filter((f: string) => f.endsWith(".jsonl"))
+					.map((f: string) => ({
 						name: f,
-						path: join(dir, f),
-						mtime: statSync(join(dir, f)).mtimeMs,
+						path: join(sessionDir, f),
+						mtime: statSync(join(sessionDir, f)).mtimeMs,
 					}))
-					.sort((a, b) => b.mtime - a.mtime);
+					.sort((a: { mtime: number }, b: { mtime: number }) => b.mtime - a.mtime);
 
 				if (files.length > 0) {
-					return new SessionManager("continue", cwd, dir, files[0].path);
+					return new SessionManager("continue", cwd, sessionDir, files[0].path);
 				}
 			} catch {
 				// Fall through to create
@@ -234,7 +235,7 @@ export class SessionManager {
 
 		const results: SessionInfo[] = [];
 		try {
-			const files = readdirSync(dir).filter((f) => f.endsWith(".jsonl"));
+			const files = readdirSync(dir).filter((f: string) => f.endsWith(".jsonl"));
 			for (const file of files) {
 				const filePath = join(dir, file);
 				try {
