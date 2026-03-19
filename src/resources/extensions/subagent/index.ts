@@ -264,7 +264,7 @@ async function mapWithConcurrencyLimit<TIn, TOut>(
 }
 
 function writePromptToTempFile(agentName: string, prompt: string): { dir: string; filePath: string } {
-	const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "pi-subagent-"));
+	const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "claude-subagent-"));
 	const safeName = agentName.replace(/[^\w.-]+/g, "_");
 	const filePath = path.join(tmpDir, `prompt-${safeName}.md`);
 	fs.writeFileSync(filePath, prompt, { encoding: "utf-8", mode: 0o600 });
@@ -340,11 +340,9 @@ async function runSingleAgent(
 		let wasAborted = false;
 
 		const exitCode = await new Promise<number>((resolve) => {
-			const bundledPaths = (process.env.GSD_BUNDLED_EXTENSION_PATHS ?? "").split(path.delimiter).map(s => s.trim()).filter(Boolean);
-			const extensionArgs = bundledPaths.flatMap(p => ["--extension", p]);
 			const proc = spawn(
-				process.execPath,
-				[process.env.GSD_BIN_PATH!, ...extensionArgs, ...args],
+				claudeBin,
+				[...args],
 				{ cwd: cwd ?? defaultCwd, shell: false, stdio: ["ignore", "pipe", "pipe"] },
 			);
 			liveSubagentProcesses.add(proc);
@@ -359,6 +357,63 @@ async function runSingleAgent(
 					return;
 				}
 
+				// Claude Code stream-json format uses different event types.
+				// Map them to the internal Message format used by GSD.
+
+				// Handle Claude Code "assistant" message events (type: "assistant")
+				// Claude Code emits: { type: "assistant", message: { ... }, session_id: "..." }
+				if (event.type === "assistant" && event.message) {
+					const msg = event.message as Message;
+					currentResult.messages.push(msg);
+
+					if (msg.role === "assistant") {
+						currentResult.usage.turns++;
+						const usage = msg.usage;
+						if (usage) {
+							currentResult.usage.input += usage.input || 0;
+							currentResult.usage.output += usage.output || 0;
+							currentResult.usage.cacheRead += usage.cacheRead || 0;
+							currentResult.usage.cacheWrite += usage.cacheWrite || 0;
+							currentResult.usage.cost += usage.cost?.total || 0;
+							currentResult.usage.contextTokens = usage.totalTokens || 0;
+						}
+						if (!currentResult.model && msg.model) currentResult.model = msg.model;
+						if (msg.stopReason) currentResult.stopReason = msg.stopReason;
+						if (msg.errorMessage) currentResult.errorMessage = msg.errorMessage;
+					}
+					emitUpdate();
+				}
+
+				// Handle Claude Code "result" event (final result at end of conversation)
+				// Claude Code emits: { type: "result", result: "...", session_id: "...", ... }
+				if (event.type === "result") {
+					// Extract usage stats from the result event if available
+					if (event.usage) {
+						currentResult.usage.input += event.usage.input_tokens || 0;
+						currentResult.usage.output += event.usage.output_tokens || 0;
+						currentResult.usage.cacheRead += event.usage.cache_read_input_tokens || 0;
+						currentResult.usage.cacheWrite += event.usage.cache_creation_input_tokens || 0;
+					}
+					if (event.cost_usd != null) {
+						currentResult.usage.cost += event.cost_usd;
+					}
+					if (event.model) {
+						currentResult.model = event.model;
+					}
+					if (event.stop_reason) {
+						currentResult.stopReason = event.stop_reason;
+					}
+					// If there's a text result, push it as a final assistant message
+					if (event.result && typeof event.result === "string" && currentResult.messages.length === 0) {
+						currentResult.messages.push({
+							role: "assistant",
+							content: [{ type: "text", text: event.result }],
+						} as Message);
+					}
+					emitUpdate();
+				}
+
+				// Legacy GSD event format support (for backward compatibility during migration)
 				if (event.type === "message_end" && event.message) {
 					const msg = event.message as Message;
 					currentResult.messages.push(msg);
@@ -381,7 +436,9 @@ async function runSingleAgent(
 					emitUpdate();
 				}
 
-				if (event.type === "tool_result_end" && event.message) {
+				// Handle tool result events
+				// Claude Code: { type: "tool_result", ... } or { type: "tool_use", ... }
+				if ((event.type === "tool_result" || event.type === "tool_result_end") && event.message) {
 					currentResult.messages.push(event.message as Message);
 					emitUpdate();
 				}
@@ -505,7 +562,7 @@ export default function (pi: ExtensionAPI) {
 		label: "Subagent",
 		description: [
 			"Delegate tasks to specialized subagents with isolated context windows.",
-			"Each subagent is a separate pi process with its own tools, model, and system prompt.",
+			"Each subagent is a separate claude process with its own tools, model, and system prompt.",
 			"Modes: single ({ agent, task }), parallel ({ tasks: [{agent, task},...] }), chain ({ chain: [{agent, task},...] } with {previous} placeholder).",
 			"Agents are defined as .md files in ~/.gsd/agent/agents/ (user) or .gsd/agents/ (project).",
 			"Use the /subagent command to list available agents and their descriptions.",
