@@ -185,6 +185,73 @@ function formatToolCall(
 	}
 }
 
+/**
+ * Maps a Claude Code API assistant message (Anthropic format) to the GSD Message format.
+ * Claude Code's `assistant` event emits `event.message` with Anthropic API field names
+ * (e.g., input_tokens, stop_reason, tool_use) which differ from GSD's internal naming
+ * (e.g., input, stopReason, toolCall).
+ */
+function mapClaudeMessageToGSD(claudeMsg: any): { message: Message; model?: string; stopReason?: string } {
+	// Map content blocks: Anthropic "tool_use" → GSD "toolCall"
+	const content: any[] = [];
+	if (Array.isArray(claudeMsg.content)) {
+		for (const block of claudeMsg.content) {
+			if (block.type === "text") {
+				content.push({ type: "text", text: block.text });
+			} else if (block.type === "tool_use") {
+				content.push({
+					type: "toolCall",
+					id: block.id,
+					name: block.name,
+					arguments: block.input ?? {},
+				});
+			} else {
+				// Pass through other block types as-is (thinking, etc.)
+				content.push(block);
+			}
+		}
+	}
+
+	// Map usage: Anthropic snake_case → GSD camelCase
+	const cu = claudeMsg.usage;
+	const inputTokens = cu?.input_tokens ?? cu?.input ?? 0;
+	const outputTokens = cu?.output_tokens ?? cu?.output ?? 0;
+	const cacheRead = cu?.cache_read_input_tokens ?? cu?.cacheRead ?? 0;
+	const cacheWrite = cu?.cache_creation_input_tokens ?? cu?.cacheWrite ?? 0;
+	const totalTokens = inputTokens + outputTokens + cacheRead;
+	const usage = {
+		input: inputTokens,
+		output: outputTokens,
+		cacheRead,
+		cacheWrite,
+		totalTokens,
+		cost: cu?.cost ?? { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 },
+	};
+
+	// Map stop_reason: Anthropic "end_turn" → GSD "stop", "tool_use" → "toolUse"
+	const rawStop = claudeMsg.stop_reason ?? claudeMsg.stopReason;
+	let stopReason: string | undefined;
+	if (rawStop === "end_turn") stopReason = "stop";
+	else if (rawStop === "tool_use") stopReason = "toolUse";
+	else if (rawStop === "max_tokens") stopReason = "length";
+	else if (rawStop) stopReason = rawStop;
+
+	const model = claudeMsg.model;
+
+	const message: Message = {
+		role: "assistant",
+		content,
+		api: "anthropic",
+		provider: "anthropic",
+		model: model ?? "unknown",
+		usage,
+		stopReason: (stopReason ?? "stop") as any,
+		timestamp: Date.now(),
+	} as any;
+
+	return { message, model, stopReason };
+}
+
 interface UsageStats {
 	input: number;
 	output: number;
@@ -362,40 +429,39 @@ async function runSingleAgent(
 
 				// Handle Claude Code "assistant" message events (type: "assistant")
 				// Claude Code emits: { type: "assistant", message: { ... }, session_id: "..." }
+				// The message uses Anthropic API format (snake_case, tool_use blocks) which
+				// must be mapped to GSD's internal format (camelCase, toolCall blocks).
 				if (event.type === "assistant" && event.message) {
-					const msg = event.message as Message;
+					const mapped = mapClaudeMessageToGSD(event.message);
+					const msg = mapped.message;
 					currentResult.messages.push(msg);
 
-					if (msg.role === "assistant") {
-						currentResult.usage.turns++;
-						const usage = msg.usage;
-						if (usage) {
-							currentResult.usage.input += usage.input || 0;
-							currentResult.usage.output += usage.output || 0;
-							currentResult.usage.cacheRead += usage.cacheRead || 0;
-							currentResult.usage.cacheWrite += usage.cacheWrite || 0;
-							currentResult.usage.cost += usage.cost?.total || 0;
-							currentResult.usage.contextTokens = usage.totalTokens || 0;
-						}
-						if (!currentResult.model && msg.model) currentResult.model = msg.model;
-						if (msg.stopReason) currentResult.stopReason = msg.stopReason;
-						if (msg.errorMessage) currentResult.errorMessage = msg.errorMessage;
+					currentResult.usage.turns++;
+					const usage = msg.usage;
+					if (usage) {
+						currentResult.usage.input += usage.input || 0;
+						currentResult.usage.output += usage.output || 0;
+						currentResult.usage.cacheRead += usage.cacheRead || 0;
+						currentResult.usage.cacheWrite += usage.cacheWrite || 0;
+						currentResult.usage.cost += usage.cost?.total || 0;
+						currentResult.usage.contextTokens = usage.totalTokens || 0;
 					}
+					if (!currentResult.model && mapped.model) currentResult.model = mapped.model;
+					if (mapped.stopReason) currentResult.stopReason = mapped.stopReason;
+					if (msg.errorMessage) currentResult.errorMessage = msg.errorMessage;
 					emitUpdate();
 				}
 
 				// Handle Claude Code "result" event (final result at end of conversation)
-				// Claude Code emits: { type: "result", result: "...", session_id: "...", ... }
+				// Claude Code emits: { type: "result", result: "...", cost_usd, total_turns, ... }
+				// The result event provides authoritative totals — use them to replace
+				// (not accumulate on top of) values already gathered from assistant events.
 				if (event.type === "result") {
-					// Extract usage stats from the result event if available
-					if (event.usage) {
-						currentResult.usage.input += event.usage.input_tokens || 0;
-						currentResult.usage.output += event.usage.output_tokens || 0;
-						currentResult.usage.cacheRead += event.usage.cache_read_input_tokens || 0;
-						currentResult.usage.cacheWrite += event.usage.cache_creation_input_tokens || 0;
-					}
 					if (event.cost_usd != null) {
-						currentResult.usage.cost += event.cost_usd;
+						currentResult.usage.cost = event.cost_usd;
+					}
+					if (event.total_turns != null) {
+						currentResult.usage.turns = event.total_turns;
 					}
 					if (event.model) {
 						currentResult.model = event.model;
@@ -403,12 +469,16 @@ async function runSingleAgent(
 					if (event.stop_reason) {
 						currentResult.stopReason = event.stop_reason;
 					}
-					// If there's a text result, push it as a final assistant message
+					// If there's a text result and no messages were captured from
+					// assistant events, create a synthetic message so output is available.
 					if (event.result && typeof event.result === "string" && currentResult.messages.length === 0) {
 						currentResult.messages.push({
 							role: "assistant",
 							content: [{ type: "text", text: event.result }],
-						} as Message);
+							model: event.model ?? "unknown",
+							stopReason: "stop",
+							timestamp: Date.now(),
+						} as any as Message);
 					}
 					emitUpdate();
 				}
