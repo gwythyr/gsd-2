@@ -8,7 +8,7 @@ import {
   InteractiveMode,
   runPrintMode,
   runRpcMode,
-} from '@gsd/pi-coding-agent'
+} from '@gsd/claude-code-adapter'
 import { existsSync, readdirSync, renameSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { agentDir, sessionsDir, authFilePath } from './app-paths.js'
@@ -314,15 +314,14 @@ const configuredAvailable = configuredProvider && configuredModel &&
 if (!configuredModel || !configuredExists) {
   // Model not configured at all, or removed from registry — pick a fallback.
   // Only fires when the model is genuinely unknown (not just temporarily unavailable).
+  // Claude-only model fallback chain (Pi/OpenAI/Google fallbacks removed)
   const piDefault = getPiDefaultModelAndProvider()
   const preferred =
     (piDefault
       ? availableModels.find((m) => m.provider === piDefault.provider && m.id === piDefault.model)
       : undefined) ||
-    availableModels.find((m) => m.provider === 'openai' && m.id === 'gpt-5.4') ||
-    availableModels.find((m) => m.provider === 'openai') ||
+    availableModels.find((m) => m.provider === 'anthropic' && m.id === 'claude-sonnet-4-6') ||
     availableModels.find((m) => m.provider === 'anthropic' && m.id === 'claude-opus-4-6') ||
-    availableModels.find((m) => m.provider === 'anthropic' && m.id.includes('opus')) ||
     availableModels.find((m) => m.provider === 'anthropic') ||
     availableModels[0]
   if (preferred) {

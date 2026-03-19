@@ -594,22 +594,10 @@ export class ModelsJsonWriter {
 }
 
 // ============================================================================
-// Agent Session stub
+// Agent Session — re-export from session adapter
 // ============================================================================
 
-export class AgentSession {
-	constructor(..._args: any[]) {
-		throw new Error("Not implemented: use claude-code-adapter implementation");
-	}
-
-	setModel(_model: any): void {
-		throw new Error("Not implemented: use claude-code-adapter implementation");
-	}
-
-	setScopedModels(_models: any[]): void {
-		throw new Error("Not implemented: use claude-code-adapter implementation");
-	}
-}
+export { AgentSessionProxy as AgentSession } from "./adapters/session-adapter.js";
 
 export type AgentSessionConfig = Record<string, unknown>;
 export type AgentSessionEvent = Record<string, unknown>;

@@ -36,17 +36,8 @@ import { discoverExtensionEntryPaths } from './extension-discovery.js'
 import { loadRegistry, readManifestFromEntryPath, isExtensionEnabled } from './extension-registry.js'
 import { renderLogo } from './logo.js'
 
-// pkg/ is a shim directory: contains gsd's piConfig (package.json) and pi's
-// theme assets (dist/modes/interactive/theme/) without a src/ directory.
-// This allows config.js to:
-//   1. Read piConfig.name → "gsd" (branding)
-//   2. Resolve themes via dist/ (no src/ present → uses dist path)
-const pkgDir = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'pkg')
-
-// MUST be set before any dynamic import of pi SDK fires — this is what config.js
-// reads to determine APP_NAME and CONFIG_DIR_NAME
-process.env.PI_PACKAGE_DIR = pkgDir
-process.env.PI_SKIP_VERSION_CHECK = '1'  // GSD runs its own update check in cli.ts — suppress pi's
+// NOTE: PI_PACKAGE_DIR and PI_SKIP_VERSION_CHECK removed — no longer needed
+// after migration from Pi SDK to Claude Code SDK.
 process.title = 'gsd'
 
 // Print branded banner on first launch (before ~/.gsd/ exists)
@@ -130,7 +121,7 @@ if (process.env.HTTP_PROXY || process.env.HTTPS_PROXY || process.env.http_proxy 
 // everywhere without elevated permissions.
 const gsdScopeDir = join(gsdNodeModules, '@gsd')
 const packagesDir = join(gsdRoot, 'packages')
-const wsPackages = ['native', 'pi-agent-core', 'pi-ai', 'pi-coding-agent', 'pi-tui']
+const wsPackages = ['native', 'pi-agent-core', 'pi-ai', 'pi-coding-agent', 'pi-tui', 'claude-code-adapter']
 try {
   if (!existsSync(gsdScopeDir)) mkdirSync(gsdScopeDir, { recursive: true })
   for (const pkg of wsPackages) {
@@ -150,7 +141,7 @@ try {
 // Validate critical workspace packages are resolvable. If still missing after the
 // symlink+copy attempts, emit a clear diagnostic instead of a cryptic
 // ERR_MODULE_NOT_FOUND from deep inside cli.js.
-const criticalPackages = ['pi-coding-agent']
+const criticalPackages = ['claude-code-adapter']
 const missingPackages = criticalPackages.filter(pkg => !existsSync(join(gsdScopeDir, pkg)))
 if (missingPackages.length > 0) {
   const missing = missingPackages.map(p => `@gsd/${p}`).join(', ')
