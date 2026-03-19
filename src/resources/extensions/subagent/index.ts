@@ -1,7 +1,7 @@
 /**
  * Subagent Tool - Delegate tasks to specialized agents
  *
- * Spawns a separate `pi` process for each subagent invocation,
+ * Spawns a separate `claude` CLI process for each subagent invocation,
  * giving it an isolated context window.
  *
  * Supports three modes:
@@ -9,7 +9,7 @@
  *   - Parallel: { tasks: [{ agent: "name", task: "..." }, ...] }
  *   - Chain: { chain: [{ agent: "name", task: "... {previous} ..." }, ...] }
  *
- * Uses JSON mode to capture structured output from subagents.
+ * Uses --output-format stream-json to capture structured output from subagents.
  */
 
 import { spawn, type ChildProcess } from "node:child_process";
@@ -17,9 +17,14 @@ import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import type { AgentToolResult } from "@gsd/pi-agent-core";
 import type { Message } from "@gsd/pi-ai";
 import { StringEnum } from "@gsd/pi-ai";
+
+// Local type definition — replaces @gsd/pi-agent-core AgentToolResult
+interface AgentToolResult<T> {
+	content: Array<{ type: "text"; text: string } | { type: "image"; source: { type: string; media_type: string; data: string } }>;
+	details: T;
+}
 import { type ExtensionAPI, getMarkdownTheme } from "@gsd/pi-coding-agent";
 import { Container, Markdown, Spacer, Text } from "@gsd/pi-tui";
 import { Type } from "@sinclair/typebox";
@@ -36,6 +41,9 @@ import { registerWorker, updateWorker } from "./worker-registry.js";
 
 const MAX_PARALLEL_TASKS = 8;
 const MAX_CONCURRENCY = 4;
+
+/** Path to the claude CLI binary. Override with CLAUDE_BIN_PATH env var. */
+const claudeBin = process.env.CLAUDE_BIN_PATH || "claude";
 const COLLAPSED_ITEM_COUNT = 10;
 const liveSubagentProcesses = new Set<ChildProcess>();
 
@@ -292,9 +300,9 @@ async function runSingleAgent(
 		};
 	}
 
-	const args: string[] = ["--mode", "json", "-p", "--no-session"];
+	const args: string[] = ["--output-format", "stream-json", "-p", "--no-session-persistence"];
 	if (agent.model) args.push("--model", agent.model);
-	if (agent.tools && agent.tools.length > 0) args.push("--tools", agent.tools.join(","));
+	if (agent.tools && agent.tools.length > 0) args.push("--allowedTools", agent.tools.join(","));
 
 	let tmpPromptDir: string | null = null;
 	let tmpPromptPath: string | null = null;
