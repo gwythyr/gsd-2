@@ -11,7 +11,7 @@ import type {
 import {
 	truncateToWidth,
 	visibleWidth,
-} from "@gsd/pi-tui";
+} from "@gsd/claude-code-adapter";
 
 import {
 	processes,

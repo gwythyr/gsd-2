@@ -4,7 +4,7 @@
 
 import { StringEnum } from "@gsd/claude-code-adapter";
 import type { ExtensionAPI } from "@gsd/claude-code-adapter";
-import { Text } from "@gsd/pi-tui";
+import { Text } from "@gsd/claude-code-adapter";
 import { Type } from "@sinclair/typebox";
 
 import type { BgProcessInfo, ProcessType } from "./types.js";

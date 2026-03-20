@@ -33,7 +33,7 @@ import {
 	matchesKey,
 	truncateToWidth,
 	type TUI,
-} from "@gsd/pi-tui";
+} from "@gsd/claude-code-adapter";
 import { makeUI, INDENT } from "./ui.js";
 
 // ─── Exported types ───────────────────────────────────────────────────────────

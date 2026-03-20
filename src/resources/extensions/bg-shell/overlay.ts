@@ -3,7 +3,7 @@
  */
 
 import type { Theme } from "@gsd/claude-code-adapter";
-import { truncateToWidth, visibleWidth, matchesKey, Key } from "@gsd/pi-tui";
+import { truncateToWidth, visibleWidth, matchesKey, Key } from "@gsd/claude-code-adapter";
 import type { BgProcess, ProcessStatus } from "./types.js";
 import { ERROR_PATTERNS, WARNING_PATTERNS } from "./types.js";
 import { formatUptime, formatTimeAgo } from "./utilities.js";

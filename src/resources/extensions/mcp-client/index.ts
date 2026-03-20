@@ -18,7 +18,7 @@ import {
 	DEFAULT_MAX_LINES,
 	formatSize,
 } from "@gsd/claude-code-adapter";
-import { Text } from "@gsd/pi-tui";
+import { Text } from "@gsd/claude-code-adapter";
 import { Type } from "@sinclair/typebox";
 import { Client } from "@modelcontextprotocol/sdk/client";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";

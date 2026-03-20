@@ -5,7 +5,7 @@
  * auto-dashboard.ts, dashboard-overlay.ts, and visualizer-views.ts.
  */
 
-import { truncateToWidth, visibleWidth } from "@gsd/pi-tui";
+import { truncateToWidth, visibleWidth } from "@gsd/claude-code-adapter";
 
 // ─── Duration Formatting ──────────────────────────────────────────────────────
 

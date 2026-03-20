@@ -1,5 +1,5 @@
 import type { Theme } from "@gsd/claude-code-adapter";
-import { truncateToWidth, visibleWidth, matchesKey, Key } from "@gsd/pi-tui";
+import { truncateToWidth, visibleWidth, matchesKey, Key } from "@gsd/claude-code-adapter";
 import { loadVisualizerData, type VisualizerData } from "./visualizer-data.js";
 import {
   renderProgressView,

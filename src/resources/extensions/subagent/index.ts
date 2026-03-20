@@ -26,7 +26,7 @@ interface AgentToolResult<T> {
 	details: T;
 }
 import { type ExtensionAPI, getMarkdownTheme } from "@gsd/claude-code-adapter";
-import { Container, Markdown, Spacer, Text } from "@gsd/pi-tui";
+import { Container, Markdown, Spacer, Text } from "@gsd/claude-code-adapter";
 import { Type } from "@sinclair/typebox";
 import { type AgentConfig, type AgentScope, discoverAgents } from "./agents.js";
 import {

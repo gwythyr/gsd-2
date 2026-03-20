@@ -643,3 +643,28 @@ export function rewriteBackgroundCommand(_command: string): string {
 
 export { Type } from "@sinclair/typebox";
 export type { Static, TSchema } from "@sinclair/typebox";
+
+// ============================================================================
+// Re-exports from @gsd/pi-tui (TUI primitives used by extensions)
+// ============================================================================
+
+export {
+	Container,
+	CURSOR_MARKER,
+	Editor,
+	isKeyRelease,
+	Key,
+	matchesKey,
+	Markdown,
+	Spacer,
+	Text,
+	truncateToWidth,
+	visibleWidth,
+	wrapTextWithAnsi,
+} from "@gsd/pi-tui";
+
+export type {
+	AutocompleteItem,
+	EditorTheme,
+	TUI,
+} from "@gsd/pi-tui";

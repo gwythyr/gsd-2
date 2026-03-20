@@ -10,7 +10,7 @@
 
 import type { ExtensionContext } from "@gsd/claude-code-adapter";
 import { type Theme } from "@gsd/claude-code-adapter";
-import { Key, matchesKey, truncateToWidth, type TUI } from "@gsd/pi-tui";
+import { Key, matchesKey, truncateToWidth, type TUI } from "@gsd/claude-code-adapter";
 import { makeUI, GLYPH } from "../shared/mod.js";
 import { validateQueueOrder, type DependencyValidation } from "./queue-order.js";
 

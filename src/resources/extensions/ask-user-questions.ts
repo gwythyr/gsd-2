@@ -11,7 +11,7 @@
 
 import type { ExtensionAPI } from "@gsd/claude-code-adapter";
 import { sanitizeError } from "./shared/sanitize.js";
-import { Text } from "@gsd/pi-tui";
+import { Text } from "@gsd/claude-code-adapter";
 import { Type } from "@sinclair/typebox";
 import {
 	showInterviewRound,

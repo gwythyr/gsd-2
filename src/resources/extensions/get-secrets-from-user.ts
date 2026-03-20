@@ -11,7 +11,7 @@ import { existsSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 
 import type { ExtensionAPI, Theme } from "@gsd/claude-code-adapter";
-import { CURSOR_MARKER, Editor, type EditorTheme, Key, matchesKey, Text, truncateToWidth, wrapTextWithAnsi } from "@gsd/pi-tui";
+import { CURSOR_MARKER, Editor, type EditorTheme, Key, matchesKey, Text, truncateToWidth, wrapTextWithAnsi } from "@gsd/claude-code-adapter";
 import { Type } from "@sinclair/typebox";
 import { makeUI, type ProgressStatus } from "./shared/mod.js";
 import { parseSecretsManifest, formatSecretsManifest } from "./gsd/files.js";

@@ -3,7 +3,7 @@
  */
 
 import type { ExtensionAPI } from "@gsd/claude-code-adapter";
-import { Key } from "@gsd/pi-tui";
+import { Key } from "@gsd/claude-code-adapter";
 import { shortcutDesc } from "../shared/terminal.js";
 
 import {

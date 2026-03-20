@@ -9,7 +9,7 @@
  */
 
 import type { ExtensionAPI } from '@gsd/claude-code-adapter'
-import type { AutocompleteItem } from '@gsd/pi-tui'
+import type { AutocompleteItem } from '@gsd/claude-code-adapter'
 import {
   getTavilyApiKey,
   getBraveApiKey,

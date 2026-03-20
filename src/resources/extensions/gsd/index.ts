@@ -55,12 +55,12 @@ import {
   buildSliceFileName, buildMilestoneFileName, gsdRoot, resolveMilestonePath,
   resolveGsdRootFile,
 } from "./paths.js";
-import { Key } from "@gsd/pi-tui";
+import { Key } from "@gsd/claude-code-adapter";
 import { join } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { shortcutDesc } from "../shared/mod.js";
-import { Text } from "@gsd/pi-tui";
+import { Text } from "@gsd/claude-code-adapter";
 import { pauseAutoForProviderError, classifyProviderError } from "./provider-error-pause.js";
 import { toPosixPath } from "../shared/mod.js";
 import { isParallelActive, shutdownParallel } from "./parallel-orchestrator.js";

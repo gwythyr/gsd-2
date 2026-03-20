@@ -1,7 +1,7 @@
 import type { ExtensionAPI, ExtensionContext } from "@gsd/claude-code-adapter";
 import { shortcutDesc } from "../shared/mod.js";
 import type { AssistantMessage } from "@gsd/claude-code-adapter";
-import { isKeyRelease, Key, matchesKey, truncateToWidth, visibleWidth } from "@gsd/pi-tui";
+import { isKeyRelease, Key, matchesKey, truncateToWidth, visibleWidth } from "@gsd/claude-code-adapter";
 import { spawn, execSync, type ChildProcess } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";

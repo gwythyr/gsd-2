@@ -43,7 +43,7 @@
 
 import type { ExtensionCommandContext } from "@gsd/claude-code-adapter";
 import { type Theme } from "@gsd/claude-code-adapter";
-import { Key, matchesKey, type TUI } from "@gsd/pi-tui";
+import { Key, matchesKey, type TUI } from "@gsd/claude-code-adapter";
 import { makeUI } from "./ui.js";
 
 // ─── Public API ───────────────────────────────────────────────────────────────

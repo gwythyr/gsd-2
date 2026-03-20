@@ -17,7 +17,7 @@
 
 import type { ExtensionContext } from "@gsd/claude-code-adapter";
 import { type Theme } from "@gsd/claude-code-adapter";
-import { Key, matchesKey, truncateToWidth, type TUI } from "@gsd/pi-tui";
+import { Key, matchesKey, truncateToWidth, type TUI } from "@gsd/claude-code-adapter";
 import { makeUI, GLYPH } from "./ui.js";
 
 export interface ConfirmOptions {
