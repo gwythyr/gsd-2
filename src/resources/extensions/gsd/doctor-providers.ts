@@ -13,7 +13,7 @@
 
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { AuthStorage } from "@gsd/pi-coding-agent";
+import { AuthStorage } from "@gsd/claude-code-adapter";
 import { loadEffectiveGSDPreferences } from "./preferences.js";
 import { getAuthPath, PROVIDER_REGISTRY, type ProviderCategory } from "./key-manager.js";
 

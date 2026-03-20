@@ -8,7 +8,7 @@
  * Widget key: "gsd-health", placement: "belowEditor"
  */
 
-import type { ExtensionContext } from "@gsd/pi-coding-agent";
+import type { ExtensionContext } from "@gsd/claude-code-adapter";
 import { runProviderChecks, summariseProviderIssues } from "./doctor-providers.js";
 import { runEnvironmentChecks } from "./doctor-environment.js";
 import { loadEffectiveGSDPreferences } from "./preferences.js";

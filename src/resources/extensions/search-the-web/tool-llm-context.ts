@@ -15,11 +15,11 @@
  * Use search-the-web when you want links/URLs to browse selectively.
  */
 
-import type { ExtensionAPI } from "@gsd/pi-coding-agent";
-import { truncateHead, DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI } from "@gsd/claude-code-adapter";
+import { truncateHead, DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES } from "@gsd/claude-code-adapter";
 import { Text } from "@gsd/pi-tui";
 import { Type } from "@sinclair/typebox";
-import { StringEnum } from "@gsd/pi-ai";
+import { StringEnum } from "@gsd/claude-code-adapter";
 
 import { LRUTTLCache } from "./cache.js";
 import { fetchWithRetryTimed, HttpError, classifyError, type RateLimitInfo } from "./http.js";

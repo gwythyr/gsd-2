@@ -2,8 +2,8 @@
  * Remote Questions — /gsd remote command
  */
 
-import type { ExtensionAPI, ExtensionCommandContext } from "@gsd/pi-coding-agent";
-import { AuthStorage } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI, ExtensionCommandContext } from "@gsd/claude-code-adapter";
+import { AuthStorage } from "@gsd/claude-code-adapter";
 import { CURSOR_MARKER, Editor, type EditorTheme, Key, matchesKey, truncateToWidth } from "@gsd/pi-tui";
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";

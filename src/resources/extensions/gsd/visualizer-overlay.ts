@@ -1,4 +1,4 @@
-import type { Theme } from "@gsd/pi-coding-agent";
+import type { Theme } from "@gsd/claude-code-adapter";
 import { truncateToWidth, visibleWidth, matchesKey, Key } from "@gsd/pi-tui";
 import { loadVisualizerData, type VisualizerData } from "./visualizer-data.js";
 import {

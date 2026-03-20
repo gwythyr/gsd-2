@@ -1,4 +1,4 @@
-import type { ExtensionAPI } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI } from "@gsd/claude-code-adapter";
 import { Type } from "@sinclair/typebox";
 import {
 	registryGetActive,

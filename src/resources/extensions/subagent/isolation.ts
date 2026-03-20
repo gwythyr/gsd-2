@@ -487,7 +487,7 @@ export async function mergeDeltaPatches(
 
 export function readIsolationMode(): IsolationMode {
 	try {
-		const { getAgentDir } = require("@gsd/pi-coding-agent");
+		const { getAgentDir } = require("@gsd/claude-code-adapter");
 		const settingsPath = path.join(getAgentDir(), "settings.json");
 		if (!fs.existsSync(settingsPath)) return "none";
 		const settings = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));

@@ -6,7 +6,7 @@
  * via jiti at runtime from ~/.gsd/agent/, not compiled by tsc).
  */
 
-import type { ExtensionCommandContext } from "@gsd/pi-coding-agent";
+import type { ExtensionCommandContext } from "@gsd/claude-code-adapter";
 import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { homedir } from "node:os";

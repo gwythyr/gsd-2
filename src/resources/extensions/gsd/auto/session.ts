@@ -16,7 +16,7 @@
  * `let` or `var` declarations.
  */
 
-import type { ExtensionCommandContext } from "@gsd/pi-coding-agent";
+import type { ExtensionCommandContext } from "@gsd/claude-code-adapter";
 import type { GitServiceImpl } from "../git-service.js";
 import type { CaptureEntry } from "../captures.js";
 import type { BudgetAlertLevel } from "../auto-budget.js";

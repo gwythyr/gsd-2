@@ -5,7 +5,7 @@
  * handleRunHook, handleUpdate, handleSkillHealth
  */
 
-import type { ExtensionAPI, ExtensionCommandContext } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI, ExtensionCommandContext } from "@gsd/claude-code-adapter";
 import { existsSync, readFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { deriveState } from "./state.js";

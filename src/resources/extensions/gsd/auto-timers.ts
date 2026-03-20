@@ -6,7 +6,7 @@
  * via startUnitSupervision() and torn down by the caller via clearUnitTimeout().
  */
 
-import type { ExtensionAPI, ExtensionContext } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@gsd/claude-code-adapter";
 import { readUnitRuntimeRecord, writeUnitRuntimeRecord } from "./unit-runtime.js";
 import { resolveAutoSupervisorConfig } from "./preferences.js";
 import type { GSDPreferences } from "./preferences.js";

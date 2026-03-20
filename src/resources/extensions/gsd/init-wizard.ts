@@ -6,7 +6,7 @@
  * bootstraps .gsd/ structure, and transitions to the first milestone discussion.
  */
 
-import type { ExtensionAPI, ExtensionCommandContext } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI, ExtensionCommandContext } from "@gsd/claude-code-adapter";
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { showNextAction } from "../shared/mod.js";

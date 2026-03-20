@@ -6,7 +6,7 @@
  * table guard clauses (source-level structural verification).
  *
  * Uses source-level checks (readFileSync + string matching) to avoid
- * @gsd/pi-coding-agent import resolution issues in dev environments.
+ * @gsd/claude-code-adapter import resolution issues in dev environments.
  */
 
 import test from "node:test";

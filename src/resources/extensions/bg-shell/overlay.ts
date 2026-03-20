@@ -2,7 +2,7 @@
  * TUI: Background Process Manager Overlay.
  */
 
-import type { Theme } from "@gsd/pi-coding-agent";
+import type { Theme } from "@gsd/claude-code-adapter";
 import { truncateToWidth, visibleWidth, matchesKey, Key } from "@gsd/pi-tui";
 import type { BgProcess, ProcessStatus } from "./types.js";
 import { ERROR_PATTERNS, WARNING_PATTERNS } from "./types.js";

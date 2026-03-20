@@ -10,7 +10,7 @@
  * concurrent auto sessions cannot corrupt each other.
  */
 
-import type { ExtensionAPI, ExtensionContext } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@gsd/claude-code-adapter";
 
 import type { AutoSession } from "./auto/session.js";
 import { NEW_SESSION_TIMEOUT_MS } from "./auto/session.js";

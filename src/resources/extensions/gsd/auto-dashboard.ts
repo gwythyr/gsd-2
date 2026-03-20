@@ -6,7 +6,7 @@
  * or AutoContext dependency. State accessors are passed as callbacks.
  */
 
-import type { ExtensionContext, ExtensionCommandContext, SessionMessageEntry } from "@gsd/pi-coding-agent";
+import type { ExtensionContext, ExtensionCommandContext, SessionMessageEntry } from "@gsd/claude-code-adapter";
 import type { GSDState } from "./types.js";
 import { getCurrentBranch } from "./worktree.js";
 import { getActiveHook } from "./post-unit-hooks.js";

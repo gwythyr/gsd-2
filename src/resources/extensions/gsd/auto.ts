@@ -14,7 +14,7 @@ import type {
   ExtensionAPI,
   ExtensionContext,
   ExtensionCommandContext,
-} from "@gsd/pi-coding-agent";
+} from "@gsd/claude-code-adapter";
 
 import { deriveState } from "./state.js";
 import type { GSDState } from "./types.js";

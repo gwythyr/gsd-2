@@ -2,7 +2,7 @@
  * /bg slash command registration — interactive process manager overlay and CLI subcommands.
  */
 
-import type { ExtensionAPI } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI } from "@gsd/claude-code-adapter";
 import { Key } from "@gsd/pi-tui";
 import { shortcutDesc } from "../shared/terminal.js";
 

@@ -15,7 +15,7 @@
 
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { getAgentDir } from "@gsd/pi-coding-agent";
+import { getAgentDir } from "@gsd/claude-code-adapter";
 import type { UnitMetrics, MetricsLedger } from "./metrics.js";
 import { formatCost, formatTokenCount, loadLedgerFromDisk } from "./metrics.js";
 import { getSkillLastUsed, detectStaleSkills } from "./skill-telemetry.js";

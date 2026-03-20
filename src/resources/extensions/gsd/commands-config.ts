@@ -4,8 +4,8 @@
  * Contains: TOOL_KEYS, loadToolApiKeys, getConfigAuthStorage, handleConfig
  */
 
-import type { ExtensionCommandContext } from "@gsd/pi-coding-agent";
-import { AuthStorage } from "@gsd/pi-coding-agent";
+import type { ExtensionCommandContext } from "@gsd/claude-code-adapter";
+import { AuthStorage } from "@gsd/claude-code-adapter";
 import { existsSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 

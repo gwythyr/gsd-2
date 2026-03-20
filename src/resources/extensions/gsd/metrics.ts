@@ -14,7 +14,7 @@
  */
 
 import { join } from "node:path";
-import type { ExtensionContext } from "@gsd/pi-coding-agent";
+import type { ExtensionContext } from "@gsd/claude-code-adapter";
 import { gsdRoot } from "./paths.js";
 import { getAndClearSkills } from "./skill-telemetry.js";
 import { loadJsonFile, loadJsonFileOrNull, saveJsonFile } from "./json-persistence.js";

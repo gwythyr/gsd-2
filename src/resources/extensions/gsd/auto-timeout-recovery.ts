@@ -4,7 +4,7 @@
  * and blocker placeholder generation.
  */
 
-import type { ExtensionAPI, ExtensionContext } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@gsd/claude-code-adapter";
 import {
   readUnitRuntimeRecord,
   writeUnitRuntimeRecord,

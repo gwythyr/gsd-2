@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { AuthStorage } from "@gsd/pi-coding-agent";
+import { AuthStorage } from "@gsd/claude-code-adapter";
 import {
   maskKey,
   formatDuration,

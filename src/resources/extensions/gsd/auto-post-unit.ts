@@ -11,7 +11,7 @@
  * Extracted from handleAgentEnd() in auto.ts.
  */
 
-import type { ExtensionContext, ExtensionAPI } from "@gsd/pi-coding-agent";
+import type { ExtensionContext, ExtensionAPI } from "@gsd/claude-code-adapter";
 import { deriveState } from "./state.js";
 import { loadFile, parseSummary, resolveAllOverrides } from "./files.js";
 import { loadPrompt } from "./prompt-loader.js";

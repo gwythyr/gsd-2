@@ -8,7 +8,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { isAbsolute, join } from "node:path";
-import { getAgentDir } from "@gsd/pi-coding-agent";
+import { getAgentDir } from "@gsd/claude-code-adapter";
 import { statSync } from "node:fs";
 
 import type {

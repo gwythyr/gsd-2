@@ -1,6 +1,6 @@
 // View renderers for the GSD workflow visualizer overlay.
 
-import type { Theme } from "@gsd/pi-coding-agent";
+import type { Theme } from "@gsd/claude-code-adapter";
 import { truncateToWidth, visibleWidth } from "@gsd/pi-tui";
 import type { VisualizerData, VisualizerMilestone, SliceVerification, VisualizerSliceActivity, VisualizerStats, VisualizerSliceRef } from "./visualizer-data.js";
 import { formatCost, formatTokenCount, classifyUnitPhase } from "./metrics.js";

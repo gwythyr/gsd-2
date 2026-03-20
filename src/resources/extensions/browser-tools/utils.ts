@@ -12,7 +12,7 @@ import {
 	DEFAULT_MAX_BYTES,
 	DEFAULT_MAX_LINES,
 	truncateHead,
-} from "@gsd/pi-coding-agent";
+} from "@gsd/claude-code-adapter";
 import {
 	beginAction,
 	finishAction,

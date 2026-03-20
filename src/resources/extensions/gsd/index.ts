@@ -22,8 +22,8 @@ import type {
   ExtensionAPI,
   ExtensionCommandContext,
   ExtensionContext,
-} from "@gsd/pi-coding-agent";
-import { createBashTool, createWriteTool, createReadTool, createEditTool, isToolCallEventType } from "@gsd/pi-coding-agent";
+} from "@gsd/claude-code-adapter";
+import { createBashTool, createWriteTool, createReadTool, createEditTool, isToolCallEventType } from "@gsd/claude-code-adapter";
 import { Type } from "@sinclair/typebox";
 
 import { debugLog, debugTime } from "./debug-logger.js";

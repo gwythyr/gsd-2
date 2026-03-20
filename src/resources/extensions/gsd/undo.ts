@@ -1,7 +1,7 @@
 // GSD Extension — Undo Last Unit
 // Rollback the most recent completed unit: revert git, remove state, uncheck plans.
 
-import type { ExtensionCommandContext, ExtensionAPI } from "@gsd/pi-coding-agent";
+import type { ExtensionCommandContext, ExtensionAPI } from "@gsd/claude-code-adapter";
 import { existsSync, readFileSync, writeFileSync, unlinkSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { nativeRevertCommit, nativeRevertAbort } from "./native-git-bridge.js";

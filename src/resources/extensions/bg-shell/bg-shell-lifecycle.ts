@@ -7,7 +7,7 @@ import type {
 	ExtensionAPI,
 	ExtensionContext,
 	Theme,
-} from "@gsd/pi-coding-agent";
+} from "@gsd/claude-code-adapter";
 import {
 	truncateToWidth,
 	visibleWidth,

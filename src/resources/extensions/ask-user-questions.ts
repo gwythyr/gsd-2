@@ -9,7 +9,7 @@
  * Based on: https://github.com/openai/codex (codex-rs/core/src/tools/handlers/ask_user_questions.rs)
  */
 
-import type { ExtensionAPI } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI } from "@gsd/claude-code-adapter";
 import { sanitizeError } from "./shared/sanitize.js";
 import { Text } from "@gsd/pi-tui";
 import { Type } from "@sinclair/typebox";

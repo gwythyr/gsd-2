@@ -6,7 +6,7 @@
  * Toggled with Ctrl+Alt+G (⌃⌥G on macOS) or opened from /gsd status.
  */
 
-import type { Theme } from "@gsd/pi-coding-agent";
+import type { Theme } from "@gsd/claude-code-adapter";
 import { truncateToWidth, visibleWidth, matchesKey, Key } from "@gsd/pi-tui";
 import { deriveState } from "./state.js";
 import { loadFile, parseRoadmap, parsePlan } from "./files.js";

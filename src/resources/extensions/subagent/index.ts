@@ -17,15 +17,15 @@ import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import type { Message } from "@gsd/pi-ai";
-import { StringEnum } from "@gsd/pi-ai";
+import type { Message } from "@gsd/claude-code-adapter";
+import { StringEnum } from "@gsd/claude-code-adapter";
 
-// Local type definition — replaces @gsd/pi-agent-core AgentToolResult
+// Local type definition — replaces @gsd/claude-code-adapter AgentToolResult
 interface AgentToolResult<T> {
 	content: Array<{ type: "text"; text: string } | { type: "image"; source: { type: string; media_type: string; data: string } }>;
 	details: T;
 }
-import { type ExtensionAPI, getMarkdownTheme } from "@gsd/pi-coding-agent";
+import { type ExtensionAPI, getMarkdownTheme } from "@gsd/claude-code-adapter";
 import { Container, Markdown, Spacer, Text } from "@gsd/pi-tui";
 import { Type } from "@sinclair/typebox";
 import { type AgentConfig, type AgentScope, discoverAgents } from "./agents.js";

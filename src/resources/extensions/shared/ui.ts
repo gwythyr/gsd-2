@@ -28,7 +28,7 @@
  * individual methods don't need it.
  */
 
-import { type Theme } from "@gsd/pi-coding-agent";
+import { type Theme } from "@gsd/claude-code-adapter";
 import { truncateToWidth, visibleWidth, wrapTextWithAnsi } from "@gsd/pi-tui";
 
 // ─── Glyphs ───────────────────────────────────────────────────────────────────

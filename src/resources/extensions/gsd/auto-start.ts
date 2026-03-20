@@ -12,7 +12,7 @@
 import type {
   ExtensionAPI,
   ExtensionCommandContext,
-} from "@gsd/pi-coding-agent";
+} from "@gsd/claude-code-adapter";
 import { deriveState } from "./state.js";
 import { loadFile, getManifestStatus } from "./files.js";
 import {

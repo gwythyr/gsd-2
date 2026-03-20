@@ -4,7 +4,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { getAgentDir, parseFrontmatter } from "@gsd/pi-coding-agent";
+import { getAgentDir, parseFrontmatter } from "@gsd/claude-code-adapter";
 
 export type AgentScope = "user" | "project" | "both";
 

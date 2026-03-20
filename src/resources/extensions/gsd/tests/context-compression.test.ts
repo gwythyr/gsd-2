@@ -3,7 +3,7 @@
  *
  * Verifies that prompt builders respect inlineLevel parameter by
  * inspecting the auto-prompts.ts source for level-aware gating.
- * Cannot call builders directly due to @gsd/pi-coding-agent import
+ * Cannot call builders directly due to @gsd/claude-code-adapter import
  * resolution — uses source-level structural verification instead.
  */
 

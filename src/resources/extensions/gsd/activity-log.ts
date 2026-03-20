@@ -14,7 +14,7 @@ import { join } from "node:path";
 import { GSDError, GSD_IO_ERROR } from "./errors.js";
 
 const SEQ_PREFIX_RE = /^(\d+)-/;
-import type { ExtensionContext } from "@gsd/pi-coding-agent";
+import type { ExtensionContext } from "@gsd/claude-code-adapter";
 import { gsdRoot } from "./paths.js";
 
 interface ActivityLogState {

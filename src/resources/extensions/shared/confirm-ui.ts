@@ -15,8 +15,8 @@
  *   if (!confirmed) return textResult("Cancelled.");
  */
 
-import type { ExtensionContext } from "@gsd/pi-coding-agent";
-import { type Theme } from "@gsd/pi-coding-agent";
+import type { ExtensionContext } from "@gsd/claude-code-adapter";
+import { type Theme } from "@gsd/claude-code-adapter";
 import { Key, matchesKey, truncateToWidth, type TUI } from "@gsd/pi-tui";
 import { makeUI, GLYPH } from "./ui.js";
 

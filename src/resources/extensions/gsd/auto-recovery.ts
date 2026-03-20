@@ -7,7 +7,7 @@
  * globals or AutoContext dependency.
  */
 
-import type { ExtensionContext } from "@gsd/pi-coding-agent";
+import type { ExtensionContext } from "@gsd/claude-code-adapter";
 import { clearUnitRuntimeRecord } from "./unit-runtime.js";
 import { clearParseCache, parseRoadmap, parsePlan } from "./files.js";
 import { isValidationTerminal } from "./state.js";

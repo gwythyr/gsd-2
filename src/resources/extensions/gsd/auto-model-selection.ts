@@ -4,7 +4,7 @@
  * and fallback chains.
  */
 
-import type { ExtensionAPI, ExtensionContext } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@gsd/claude-code-adapter";
 import type { GSDPreferences } from "./preferences.js";
 import { resolveModelWithFallbacksForUnit, resolveDynamicRoutingConfig } from "./preferences.js";
 import { classifyUnitComplexity, tierLabel } from "./complexity-classifier.js";

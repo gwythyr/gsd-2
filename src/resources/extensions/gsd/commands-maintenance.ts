@@ -4,7 +4,7 @@
  * Contains: handleCleanupBranches, handleCleanupSnapshots, handleSkip, handleDryRun
  */
 
-import type { ExtensionCommandContext } from "@gsd/pi-coding-agent";
+import type { ExtensionCommandContext } from "@gsd/claude-code-adapter";
 import { deriveState } from "./state.js";
 import { nativeBranchList, nativeDetectMainBranch, nativeBranchListMerged, nativeBranchDelete, nativeForEachRef, nativeUpdateRef } from "./native-git-bridge.js";
 

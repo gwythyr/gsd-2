@@ -41,8 +41,8 @@
  * Pressing Escape also resolves as "not_yet".
  */
 
-import type { ExtensionCommandContext } from "@gsd/pi-coding-agent";
-import { type Theme } from "@gsd/pi-coding-agent";
+import type { ExtensionCommandContext } from "@gsd/claude-code-adapter";
+import { type Theme } from "@gsd/claude-code-adapter";
 import { Key, matchesKey, type TUI } from "@gsd/pi-tui";
 import { makeUI } from "./ui.js";
 

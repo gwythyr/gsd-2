@@ -22,13 +22,13 @@
  *   export CONTEXT7_API_KEY=your_key   (get one at context7.com/dashboard)
  */
 
-import type { ExtensionAPI } from "@gsd/pi-coding-agent";
+import type { ExtensionAPI } from "@gsd/claude-code-adapter";
 import {
 	DEFAULT_MAX_BYTES,
 	DEFAULT_MAX_LINES,
 	formatSize,
 	truncateHead,
-} from "@gsd/pi-coding-agent";
+} from "@gsd/claude-code-adapter";
 import { Text } from "@gsd/pi-tui";
 import { Type } from "@sinclair/typebox";
 

@@ -1,5 +1,5 @@
 import type { FSWatcher } from "chokidar";
-import type { EventBus } from "@gsd/pi-coding-agent";
+import type { EventBus } from "@gsd/claude-code-adapter";
 import { relative } from "node:path";
 
 let watcher: FSWatcher | null = null;
